@@ -2,13 +2,14 @@
 #
 # watch.sh 
 # Invoke this script with one argument 'size'
-# bash watch.sh 10 / this indicate 10mb file size  
+# bash watch.sh 10 & / this indicate 10mb file size  
 
-args=('$@')
+args=("$@")
 
 INDEX=0
 
-if [$# -eq 1]; then
+echo ${args[0]}
+if [ $# -eq 1 ]; then
   SIZE=${args[0]}
 else
   echo "You have to pass moving file size"
