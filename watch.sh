@@ -23,18 +23,18 @@ inotifywait -m ${WATCHPATH} -e create |
 while read path action file; do
   # TODO(ejsohn) : Erace all echo commands
   echo "The file '$file' appeared in directory '$path' via '$action'"
-	
-	for eachfile in $path*; do 
-      filesize=$( wc -c $eachfile | awk '{print $1}')
-      if [ $filesize -ge $SIZE ]; then
-        echo "move file to '${DESTINATION[$INDEX]}'"
-        mv $eachfile ${DESTINATION[$INDEX]}
-        if [ $INDEX -eq 0 ]; then
-          let 'INDEX+=1'
-        else
-          let 'INDEX-=1'
-        fi 
-      fi
-	done
+
+  for eachfile in $path*; do 
+    filesize=$( wc -c $eachfile | awk '{print $1}')
+    if [ $filesize -ge $SIZE ]; then
+      echo "move file to '${DESTINATION[$INDEX]}'"
+      mv $eachfile ${DESTINATION[$INDEX]}
+      if [ $INDEX -eq 0 ]; then
+        let 'INDEX+=1'
+      else
+        let 'INDEX-=1'
+      fi 
+    fi
+  done
 
 done
