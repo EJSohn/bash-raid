@@ -1,12 +1,13 @@
 #! /bin/bash
 #
 # watch.sh 
-# Invoke this script with one argument 'size'
+# Invoke this script with one argument 'Megabytes size'
 # bash watch.sh 10 & / this indicate 10mb file size  
 
-# Destination/WatchPath should be replaced with actual path
+
+# Destination/WatchPath/PCAPPATH should be replaced with actual path
 DESTINATION=('/home/vagrant/node-one' '/home/vagrant/node-two')
-WATCHPATH='/home/vagrant/root'
+PCAPPATH='/home/vagrant/pcaps'
 args=("$@")
 INDEX=0
 
@@ -18,16 +19,19 @@ else
   exit
 fi
 
-inotifywait -m ${WATCHPATH} -e create |
+inotifywait -m ${PCAPPATH} -e create |
 while read path action file; do
   # TODO(ejsohn) : Erace all echo commands
   echo "The file '$file' appeared in directory '$path' via '$action'"
 
   for eachfile in $path*; do 
     
-    filesize=$( wc -c $eachfile | awk '{print $1}')
-    
-    if [ $filesize -ge $SIZE ]; then
+    # Bytes size
+    filesizebyte=$( wc -c $eachfile | awk '{print $1}')
+    # Megabytes size
+    let "filesizembyte=${filesizebyte}/1000000"
+
+    if [ $filesizembyte -ge $SIZE ]; then
     
       mv $eachfile ${DESTINATION[$INDEX]}
     
@@ -45,4 +49,8 @@ while read path action file; do
   
   done
 
-done
+done &
+
+# Start generating pcaps
+date +'%Y-%m-%d_%H:%M:%S' |
+xargs -I {} bash -c "sudo tcpdump -C $SIZE -Z root -i eth0 -w $PCAPPATH/{}.pcap" > $PCAPPATH/pcaps.log &
