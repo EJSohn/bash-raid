@@ -6,8 +6,8 @@
 
 
 # Destination/WatchPath/PCAPPATH should be replaced with actual path
-DESTINATION=('/home/vagrant/node-one' '/home/vagrant/node-two')
-PCAPPATH='/home/vagrant/pcaps'
+DESTINATION=('/root/dir/one' '/root/dir/two')
+PCAPPATH='/root/pcaps'
 args=("$@")
 INDEX=0
 
@@ -53,4 +53,4 @@ done &
 
 # Start generating pcaps
 date +'%Y-%m-%d_%H:%M:%S' |
-xargs -I {} bash -c "sudo tcpdump -C $SIZE -Z root -i eth0 -w $PCAPPATH/{}.pcap" > $PCAPPATH/pcaps.log &
+xargs -I {} bash -c "sudo tcpdump -C $SIZE -Z root -i wlx7cdd90e15d32 -w $PCAPPATH/{}.pcap" &
