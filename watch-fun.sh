@@ -52,7 +52,7 @@ function watch() {
   
     done
 
-  done 
+  done &
 }
 
 
@@ -71,7 +71,7 @@ function dumping() {
   PCAPPATH="${2}"
   # Start generating pcaps
   date +'%Y-%m-%d_%H:%M:%S' |
-  xargs -I {} bash -c "sudo tcpdump -C $SIZE -Z root -i wlx7cdd90e15d32 -w $PCAPPATH/{}.pcap" 
+  xargs -I {} bash -c "sudo tcpdump -C $SIZE -Z root -i wlx7cdd90e15d32 -w $PCAPPATH/{}.pcap" &
 }
 
 
